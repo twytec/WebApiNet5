@@ -1,2 +1,2 @@
-# WebApiNet5
-Auth with ASP.NET Core and .NET 5
+# WebApi
+Auth with ASP.NET Core WebApi MVC and .NET 5
