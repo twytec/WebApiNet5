@@ -23,8 +23,8 @@ namespace WebApiNet5
 {
     public class Startup
     {
-        public const string WebApiUrl = "https://mywebapp.org";
-        public const string SureKey = "A really sure key Guid 7DAE404E-35A8-447C-A1FD-60AF903D31CB";
+        public const string WebApiUrl = "https://localhost:5001";
+        public const string SureKey = "7DAE404E-35A8-447C-A1FD-60AF903D31CB";
         public const int TokenExpireDays = 1;
 
         public Startup(IConfiguration configuration)
@@ -69,6 +69,7 @@ namespace WebApiNet5
                     };
                 });
 
+
             services.AddControllers();
         }
 
@@ -86,7 +87,7 @@ namespace WebApiNet5
             app.UseHttpsRedirection();
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

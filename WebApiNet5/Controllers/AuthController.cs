@@ -53,7 +53,7 @@ namespace WebApiNet5.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return new OkObjectResult(GenerateJwtToken(model.Email, user));
+                return Ok();
             }
 
             return BadRequest(result.Errors);
@@ -69,7 +69,11 @@ namespace WebApiNet5.Controllers
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
 
-                return Ok(GenerateJwtToken(model.Email, appUser));
+                var token = new ViewModels.TokenViewModel() {
+                    Token = GenerateJwtToken(model.Email, appUser),
+                    TokenExpire = DateTime.Now.AddDays(Startup.TokenExpireDays)
+                };
+                return Ok(token);
             }
 
             return BadRequest();
@@ -90,8 +94,8 @@ namespace WebApiNet5.Controllers
             var expires = DateTime.Now.AddDays(Convert.ToDouble(Startup.TokenExpireDays));
 
             var token = new JwtSecurityToken(
-                _config[Startup.WebApiUrl],
-                _config[Startup.WebApiUrl],
+                Startup.WebApiUrl,
+                Startup.WebApiUrl,
                 claims,
                 expires: expires,
                 signingCredentials: creds
